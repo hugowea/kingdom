@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Форма для короля</title>
+</head>
+<body>
+    <h1>Форма для короля</h1>
+    <form method="post" action="/form/king/submit/">
+        {% csrf_token %}
+        <label for="king">Выберите себя из списка:</label>
+        <select id="king" name="king" required>
+            <option value="king1">Король 1</option>
+            <option value="king2">Король 2</option>
+            <option value="king3">Король 3</option>
+            <!-- Добавь других королей по аналогии -->
+        </select><br><br>
+        <input type="submit" value="Выбрать">
+    </form>
+</body>
+</html>

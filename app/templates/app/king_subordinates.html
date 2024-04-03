@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Подданные для короля</title>
+</head>
+<body>
+    <h1>Подданные для короля</h1>
+    <table>
+        <tr>
+            <th>Царство</th>
+            <th>Личные данные</th>
+            <th>Действия</th>
+        </tr>
+        {% for subordinate in subordinates %}
+        <tr>
+            <td>{{ subordinate.kingdom }}</td>
+            <td>{{ subordinate.personal_data }}</td>
+            <td>
+                <a href="/form/king/{{ subordinate.id }}/view/">Просмотреть</a>
+                <a href="/form/king/{{ subordinate.id }}/accept/">Зачислить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Просмотр ответов подданного</title>
+</head>
+<body>
+    <h1>Просмотр ответов подданного</h1>
+    <h2>Царство: {{ subordinate.kingdom }}</h2>
+    <h2>Личные данные: {{ subordinate.personal_data }}</h2>
+    <h2>Ответы на тестовое испытание:</h2>
+    <ul>
+        <li>Вопрос 1: {{ subordinate.answer1 }}</li>
+        <li>Вопрос 2: {{ subordinate.answer2 }}</li>
+        <!-- Добавь остальные вопросы и ответы по аналогии -->
+    </ul>
+    <a href="{% url 'king' %}">Назад к списку подданных</a>
+</body>
+</html>

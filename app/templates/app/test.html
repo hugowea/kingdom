@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тестовое испытание</title>
+</head>
+<body>
+    <h1>Тестовое испытание</h1>
+    <form method="post" action="/test/">
+        {% csrf_token %}
+        <p>Вопрос 1: ...</p>
+        <input type="radio" id="answer1_true" name="answer1" value="true">
+        <label for="answer1_true">True</label>
+        <input type="radio" id="answer1_false" name="answer1" value="false">
+        <label for="answer1_false">False</label><br><br>
+        
+        <p>Вопрос 2: ...</p>
+        <input type="radio" id="answer2_true" name="answer2" value="true">
+        <label for="answer2_true">True</label>
+        <input type="radio" id="answer2_false" name="answer2" value="false">
+        <label for="answer2_false">False</label><br><br>
+        
+        <!-- Добавь еще вопросы и варианты ответов по аналогии -->
+        
+        <input type="submit" value="Отправить">
+    </form>
+</body>
+</html>
