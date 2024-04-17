@@ -7,14 +7,7 @@
     <h1>Форма для подданного</h1>
     <form action="/subordinate/" method="post">
         {% csrf_token %}
-        <label for="name">Имя: </label>
-        <input id="name" type="text" name="name" required>
-        <label for="kingdom">Королевство: </label>
-        <input id="kingdom" type="text" name="kingdom" required>
-        <label for="age">Возраст: </label>
-        <input id="age" type="integer" name="age" required>
-        <label for="email">Голубь (email:) </label>
-        <input id="email" type="text" name="enaul" required>
+        {{ form.as_p }}
         <input type="submit" value="Сохранить">
     </form>
 </body>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Результат подданного</title>
+</head>
+<body>
+    <h1>Результат подданного</h1>
+    <form action="/king_subordinates/{{king_name}}/{{subordinate_name}}/accept/">
+        {% csrf_token %}
+        {% for result in results %}
+            <p> Вопрос : {{result.question}} // Ответил: {{ result.isAnswerCorrect }} // Получил {{ result.ball }}  </p>
+        {% endfor %}
+
+        <p> Всего заработал {{sum_ball}}, что составило -- {{percent}}%</p>
+        <input type="submit" value="Зачислить">
+
+    </form>
+    <a href="/king_subordinates/{{king_name}}">Вернуться назад</a>
+</body>
+</html>

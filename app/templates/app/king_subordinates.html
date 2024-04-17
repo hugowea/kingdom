@@ -4,21 +4,33 @@
     <title>Подданные для короля</title>
 </head>
 <body>
-    <h1>Подданные для короля</h1>
+    <h1>Заявки подданных для короля</h1>
     <table>
         <tr>
+            <th>Имя</th>
             <th>Царство</th>
-            <th>Личные данные</th>
             <th>Действия</th>
         </tr>
         {% for subordinate in subordinates %}
         <tr>
+            <td>{{ subordinate.name }}</td>
             <td>{{ subordinate.kingdom }}</td>
-            <td>{{ subordinate.personal_data }}</td>
             <td>
-                <a href="/form/king/{{ subordinate.id }}/view/">Просмотреть</a>
-                <a href="/form/king/{{ subordinate.id }}/accept/">Зачислить</a>
+                <a href="/king_subordinates/{{king_name}}/{{subordinate.name}}/">Просмотреть</a>
             </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h1>Зачисленные подданные для короля</h1>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Почта</th>
+        </tr>
+        {% for subordinate in subordinates_accepted %}
+        <tr>
+            <td>{{ subordinate.name }}</td>
+            <td>{{ subordinate.email }}</td>
         </tr>
         {% endfor %}
     </table>

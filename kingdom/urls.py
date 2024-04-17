@@ -15,14 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import index, subordinate, king, king_subordinates, test, answer
+from app.views import index, subordinate, king, king_subordinates, answer, test_of_kingdom, results, king_subordinate_result, king_subordinate_accept
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('subordinate/', subordinate, name='subordinate'),
     path('king/', king, name='king'),
-    path('king_subordinates/', king_subordinates, name='king_subordinates'),
-    path('test/', test, name='test'),
+    path('king_subordinates/<str:king_name>/', king_subordinates, name='king_subordinates'),
     path('answer/', answer, name='answer'),
+    path('results/', results, name='results'),
+    path('test_of_kingdom/<int:kingdom_id>/<str:user_name>/', test_of_kingdom, name='test_of_kingdom'),
+    path('king_subordinates/<str:king_name>/<str:subordinate_name>/', king_subordinate_result, name='king_subordinate_result'),
+    path('king_subordinates/<str:king_name>/<str:subordinate_name>/accept/', king_subordinate_accept, name='king_subordinate_accept')
 ]

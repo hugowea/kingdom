@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ваш результат</title>
+</head>
+<body>
+    <h1>Ваш результат</h1>
+    <form action="/">
+        {% csrf_token %}
+        <p>Your result is {{result}}%</p>
+        <input type="submit" value="Вернуться назад">
+    </form>
+</body>
+</html>
