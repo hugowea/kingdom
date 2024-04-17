@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Все короли и их подданные</title>
+</head>
+<body>
+    <h1>Все короли и их подданные</h1>
+    <table>
+        <tr>
+            <th>Имя</th>
+            <th>Количество претендентов</th>
+            <th>Количество зачисленных подданных</th>
+        </tr>
+        {% for king in kings_info %}
+        <tr>
+            <td>{{ king.king_name }}</td>
+            <td>{{ king.subordinates }}</td>
+            <td>{{ king.subordinates_accepted }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/king/">Вернуться назад</a>
+</body>
+</html>

@@ -3,32 +3,23 @@ from .forms import SubordinateForm, KingForm
 from .models import Question, Kingdom, King, Subordinate, Answer, Accept
 
 def index(request):
-    print("I am here")
     return render(request, 'app/index.html')
 
 def subordinate(request):
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = SubordinateForm(request.POST)
         if form.is_valid():
             form.save()
             acc = Accept(subordinate=Subordinate.objects.get(name = request.POST['name']), king=King.objects.get(kingdom=request.POST['kingdom']), accepted = False)
             acc.save()        
-        # check whether it's valid:
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
         return HttpResponseRedirect(f"/test_of_kingdom/{request.POST['kingdom']}/{request.POST['name']}/")
 
-    # if a GET (or any other method) we'll create a blank form
     else:
         context = {'form': SubordinateForm()}
         return render(request, 'app/subordinate.html', context)
 
 def king(request):
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         king = request.POST['name']
 
         kingdom = King.objects.get(pk = king).kingdom
@@ -40,12 +31,6 @@ def king(request):
         subordinates_accepted_new = [subordinate.subordinate for subordinate in subordinates_accepted]
         subordinates_accepted_names = [subordinate_accepted.subordinate.name for subordinate_accepted in subordinates_accepted]
         subordinates_new = [subordinate for subordinate in subordinates if subordinate.name not in subordinates_accepted_names]
-        # print(request.POST)
-
-        # check whether it's valid:
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
         return render(request, 'app/king_subordinates.html', context = {'subordinates': subordinates_new, 'subordinates_accepted': subordinates_accepted_new, 'king_name': king_name})
     else: 
         context = {'form': KingForm()}
@@ -58,14 +43,8 @@ def king_subordinates(request, king_name):
     subordinates_accepted_new = [subordinate.subordinate for subordinate in subordinates_accepted]
     subordinates_accepted_names = [subordinate_accepted.subordinate.name for subordinate_accepted in subordinates_accepted]
     subordinates_new = [subordinate for subordinate in subordinates if subordinate.name not in subordinates_accepted_names]
-    # print(request.POST)
-
-    # check whether it's valid:
-        # process the data in form.cleaned_data as required
-        # ...
-        # redirect to a new URL:
+    
     return render(request, 'app/king_subordinates.html', context = {'subordinates': subordinates_new, 'subordinates_accepted': subordinates_accepted_new, 'king_name': king_name})
-    return render(request, 'app/king_subordinates.html', context = {'king_name': king_name})
 
 def answer(request):
     return render(request, 'app/answer.html')
@@ -75,31 +54,20 @@ def results(request):
 
 def test_of_kingdom(request, kingdom_id, user_name):
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        print(request.POST)
-        print(request.POST.dict())
         subordinate = Subordinate.objects.get(name = user_name)
-        print(subordinate)
         dictionary = request.POST.dict()
         first_key = next(iter(dictionary))
         dictionary.pop(first_key)
         total_correct_answers = 0
         for key in dictionary:
-            print(key)
             question = Question.objects.get(content=key)
             correct_answer = question.correct_answer
             isAnswerCorrect = False
             if dictionary[key] == correct_answer:
                 isAnswerCorrect = True
                 total_correct_answers += 1
-            print(subordinate.pk)
             ans = Answer(subordinate=subordinate, question=question, isAnswerCorrect=isAnswerCorrect)
             ans.save()
-
-        # check whether it's valid:
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
         result = total_correct_answers/len(dictionary)*100
         return render(request, 'app/results.html', context= {'result': result})
     else:
@@ -137,12 +105,34 @@ def king_subordinate_accept(request, king_name, subordinate_name):
     subordinates_accepted_new = [subordinate.subordinate for subordinate in subordinates_accepted]
     subordinates_accepted_names = [subordinate_accepted.subordinate.name for subordinate_accepted in subordinates_accepted]
     subordinates_new = [subordinate for subordinate in subordinates if subordinate.name not in subordinates_accepted_names]
-        # print(request.POST)
-
-        # check whether it's valid:
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
     return render(request, 'app/king_subordinates.html', context = {'subordinate_name': subordinate_name, 'subordinates': subordinates_new, 'subordinates_accepted': subordinates_accepted_new, 'king_name': king_name})
-    
 
+def king_subordinate_unaccept(request, king_name, subordinate_name):
+    subordinate = Subordinate.objects.get(name = subordinate_name)
+    acc = Accept.objects.get(subordinate= subordinate)
+    acc.accepted = False
+    acc.save()
+    
+    kingdom = King.objects.get(name = king_name).kingdom
+    
+    kingdom_id = Kingdom.objects.get(kingdom_name = kingdom).pk
+    subordinates = Subordinate.objects.filter(kingdom = kingdom_id)
+    
+    subordinates_accepted = Accept.objects.filter(king = King.objects.get(name = king_name), accepted = True)
+    subordinates_accepted_new = [subordinate.subordinate for subordinate in subordinates_accepted]
+    subordinates_accepted_names = [subordinate_accepted.subordinate.name for subordinate_accepted in subordinates_accepted]
+    subordinates_new = [subordinate for subordinate in subordinates if subordinate.name not in subordinates_accepted_names]
+    return render(request, 'app/king_subordinates.html', context = {'subordinate_name': subordinate_name, 'subordinates': subordinates_new, 'subordinates_accepted': subordinates_accepted_new, 'king_name': king_name})
+   
+def kingall(request):
+    kings = King.objects.all()
+    kings_info = []
+    for king in kings:
+        kingdom = king.kingdom
+        subordinates = Subordinate.objects.filter(kingdom = kingdom)
+        subordinates_accepted = Accept.objects.filter(king = king, accepted = True)
+        subordinates_accepted_new = [subordinate.subordinate for subordinate in subordinates_accepted]
+        subordinates_accepted_names = [subordinate_accepted.subordinate.name for subordinate_accepted in subordinates_accepted]
+        subordinates_new = [subordinate for subordinate in subordinates if subordinate.name not in subordinates_accepted_names]
+        kings_info.append({'king_name': king.name, 'subordinates': len(subordinates_new), 'subordinates_accepted': len(subordinates_accepted_new)})
+    return render(request, "app/king_all.html", context={'kings_info': kings_info})

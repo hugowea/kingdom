@@ -31,8 +31,12 @@
         <tr>
             <td>{{ subordinate.name }}</td>
             <td>{{ subordinate.email }}</td>
+            <td>
+                <a href="/king_subordinates/{{king_name}}/{{subordinate.name}}/unaccept/">Отчислить</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
+    <a href="/king/">Вернуться обратно</a>
 </body>
 </html>
